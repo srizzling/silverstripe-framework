@@ -146,6 +146,47 @@ class CmsUiContext extends BehatContext
 	}
 
 	/**
+	 * @Given /^I should see a "([^"]*)" checkbox in CMS Content Toolbar$/
+	 */
+	public function iShouldSeeACheckboxInCmsContentToolbar($text)
+	{
+		$for=NULL;
+		$page = $this->getSession()->getPage();
+		
+		foreach ($page->findAll('css','label') as $label) {
+			if($label->getText()==="$text"){				
+				$for=$label->getAttribute('for');
+			}
+		}	
+		$element = $page->findById($for);
+		assertNotNull($element, sprintf('%s checkbox not found', $text));
+	}
+
+
+	/**
+	 * @Given /^I should check a "([^"]*)" checkbox in CMS Content Toolbar$/
+	 */
+	public function iShouldCheckACheckboxInCmsContentToolbar($text)
+	{
+		$for=NULL;
+		$page = $this->getSession()->getPage();
+		$cms_content_toolbar_element = $this->getCmsContentToolbarElement();
+		foreach ($cms_content_toolbar_element->findAll('css','label') as $label) {
+			if($label->getText()==="$text"){				
+				$for=$label->getAttribute('for');
+			}
+		}
+		assertNotNull($for, sprintf('%s checkbox not found', $text));
+		$element = $page->findById($for);
+		
+		$this->getSession()->getDriver()->click($element->getXPath());			
+	}
+
+
+
+	
+
+	/**
 	 * @When /^I should see "([^"]*)" in the tree$/
 	 */
 	public function stepIShouldSeeInCmsTree($text)
@@ -439,6 +480,39 @@ class CmsUiContext extends BehatContext
 			$listEl->click();
 		}
 	}
+
+	/**
+	* Selects a option from labelled radio option group. Uses CSS selectors for now.
+	* @Given /^I select "([^"]*)" from "([^"]*)" radio group$/
+	*/
+	public function iSelectFromRadioGroup($value, $labeltext)
+	{
+		$page = $this->getSession()->getPage();
+		$parent = NULL;		
+		foreach ($page->findAll('css','label') as $label) {
+			if($label->getText()===$labeltext){				
+				$parent=$label->getParent();
+			}
+		}	
+		if($parent===NULL){
+			throw new \InvalidArgumentException(sprintf('Radio Button Group "%s" cannot be found', $labeltext));
+		} else{
+			foreach($parent->findAll('css', 'label') as $option){
+				if($option->getText() === $value){
+					$for = $option->getAttribute('for');
+					$radio = $parent->findById($for);
+					if(null === $radio){
+						throw new \InvalidArgumentException(sprintf('Radio Button  "%s" cannot be found', $value));
+					}
+					$this->getSession()->getDriver()->click($radio->getXPath());
+				}
+			}
+		}
+	}
+
+
+
+
 
 	/**
 	 * Returns fixed step argument (with \\" replaced back to ").

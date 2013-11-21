@@ -52,9 +52,20 @@ class CmsFormsContext extends BehatContext
 	public function stepIShouldSeeAnEditPageForm()
 	{
 		$page = $this->getSession()->getPage();
-
 		$form = $page->find('css', '#Form_EditForm');
-		assertNotNull($form, 'I should see an edit page form');
+		$readonly = $page -> findById("URLSegment") ->getAttribute("class");
+		assertFalse(strpos($readonly, "field readonly text")!== false, $readonly);
+	}
+
+	/**
+	 * @Then /^I should not see an edit page form$/
+	 */
+	public function stepIShouldNotSeeAnEditPageForm()
+	{
+		$page = $this->getSession()->getPage();
+		$form = $page->find('css', '#Form_EditForm');
+		$readonly = $page -> findById("URLSegment") ->getAttribute("class");
+		assertTrue(strpos($readonly, "field readonly text")!== false, $readonly);	
 	}
 
 	/**
