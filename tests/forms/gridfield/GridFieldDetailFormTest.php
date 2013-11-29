@@ -334,7 +334,7 @@ class GridFieldDetailFormTest_GroupController extends Controller implements Test
 	private static $allowed_actions = array('Form');
 
 	protected $template = 'BlankPage';
-
+	
 	public function Form() {
 		$field = new GridField('testfield', 'testfield', GridFieldDetailFormTest_PeopleGroup::get()->sort('Name'));
 		$field->getConfig()->addComponent($gridFieldForm = new GridFieldDetailForm($this, 'Form'));
