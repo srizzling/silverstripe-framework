@@ -145,47 +145,7 @@ class CmsUiContext extends BehatContext
 		assertNotNull($element, sprintf('%s button not found', $text));
 	}
 
-	/**
-	 * @Given /^I should see a "([^"]*)" checkbox in CMS Content Toolbar$/
-	 */
-	public function iShouldSeeACheckboxInCmsContentToolbar($text)
-	{
-		$for=NULL;
-		$page = $this->getSession()->getPage();
-		
-		foreach ($page->findAll('css','label') as $label) {
-			if($label->getText()==="$text"){				
-				$for=$label->getAttribute('for');
-			}
-		}	
-		$element = $page->findById($for);
-		assertNotNull($element, sprintf('%s checkbox not found', $text));
-	}
-
-
-	/**
-	 * @Given /^I should check a "([^"]*)" checkbox in CMS Content Toolbar$/
-	 */
-	public function iShouldCheckACheckboxInCmsContentToolbar($text)
-	{
-		$for=NULL;
-		$page = $this->getSession()->getPage();
-		$cms_content_toolbar_element = $this->getCmsContentToolbarElement();
-		foreach ($cms_content_toolbar_element->findAll('css','label') as $label) {
-			if($label->getText()==="$text"){				
-				$for=$label->getAttribute('for');
-			}
-		}
-		assertNotNull($for, sprintf('%s checkbox not found', $text));
-		$element = $page->findById($for);
-		
-		$this->getSession()->getDriver()->click($element->getXPath());			
-	}
-
-
-
 	
-
 	/**
 	 * @When /^I should see "([^"]*)" in the tree$/
 	 */
