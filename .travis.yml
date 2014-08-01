@@ -62,4 +62,4 @@ notifications:
 # - php ~/travis-support/travis_setup_sauceconnect.php --if-env BEHAT_TEST --username ${SAUCE_USERNAME} --access-key ${SAUCE_ACCESS_KEY} --tunnel-identifier ${TRAVIS_JOB_NUMBER} --base-url http://localhost
 
 addons:
-  firefox: "24.0"
+  firefox: "23.0"
